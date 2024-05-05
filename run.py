@@ -8,7 +8,7 @@ from websocket import WebSocket
 from cmd_type import CHZZK_CHAT_CMD
 
 
-class ChzzkChat:        #입력된 값에 따라 요리조리 실행하는 생성자 클래스
+class ChzzkChat:        #생성자 클래스
 
     def __init__(self, streamer, cookies, logger):
 
@@ -193,14 +193,6 @@ def get_logger():       #채팅 로그를 chat.log 파일에 저장
     logger.addHandler(stream_handler)
 
     return logger
-
-def get_chat_log():
-    # 로그 파일을 읽어와서 채팅 로그를 반환합니다.
-    try:
-        with open('chat.log', 'r') as file:
-            return file.read()
-    except FileNotFoundError:
-        return "채팅 로그가 없습니다."
 
 if __name__ == '__main__':      #스트리머 아이디를 입력받아 채팅 로그 표시
 
