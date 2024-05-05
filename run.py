@@ -194,6 +194,13 @@ def get_logger():       #채팅 로그를 chat.log 파일에 저장
 
     return logger
 
+def get_chat_log():
+    # 로그 파일을 읽어와서 채팅 로그를 반환합니다.
+    try:
+        with open('chat.log', 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        return "채팅 로그가 없습니다."
 
 if __name__ == '__main__':      #스트리머 아이디를 입력받아 채팅 로그 표시
 
