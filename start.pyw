@@ -10,14 +10,14 @@ class ChzzkChatGUI:
         # Tkinter GUI를 구성하는 생성자
         self.master = master
         master.title("치지직 채팅 크롤러")
-        master.geometry("1000x800")
+        master.geometry("1000x600")
         master.resizable(width=False, height=False)
 
         # Setting Frame
         self.setting_frame = tk.Frame(master, bg='gray')
         self.setting_frame.pack(side="right")
 
-        tk.Label(self.setting_frame, text="ID:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+        tk.Label(self.setting_frame, text="스트리머 ID:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
         self.edit_box = tk.Entry(self.setting_frame, width=30)
         self.edit_box.grid(row=0, column=1, padx=5, pady=5)
 
@@ -25,7 +25,7 @@ class ChzzkChatGUI:
         exit_button = tk.Button(self.setting_frame, text="치지직 채팅 크롤러 종료", command=self.exit_app)
         exit_button.grid(row=10, column=0, columnspan=2, pady=10)
 
-        # "채팅 불러오기" 버튼과 "채팅 불러오기 종료" 버튼 프레임
+        # "채팅 불러오기" 버튼, "채팅 불러오기 종료", "채팅 로그 초기화", "ID 입력 지우기" 버튼프레임
         chat_button_frame = tk.Frame(self.setting_frame, bg='gray')
         chat_button_frame.grid(row=1, column=0, columnspan=2, pady=5)
 
@@ -35,12 +35,18 @@ class ChzzkChatGUI:
         self.btn_stop_chat = tk.Button(chat_button_frame, text="채팅 불러오기 종료", command=self.stop_chzzk_chat)
         self.btn_stop_chat.pack(side="left", padx=5, pady=5)
 
-        clear_button = tk.Button(chat_button_frame, text="채팅 로그 초기화", command=self.clear_chat_log)
-        clear_button.pack(side="left",padx=5, pady=5)
+        chat_button_frame2 = tk.Frame(self.setting_frame, bg='gray')
+        chat_button_frame2.grid(row=2, column=0, columnspan=2, pady=5)
+
+        clear_button = tk.Button(chat_button_frame2, text="채팅 로그 초기화", command=self.clear_chat_log)
+        clear_button.pack(side="left", padx=5, pady=5)
+
+        clear_edit_box_button = tk.Button(chat_button_frame2, text="ID 입력 지우기", command=self.clear_id)
+        clear_edit_box_button.pack(side="left", padx=5, pady=5)
 
         # Entry와 Label을 포함한 하위 프레임 생성
         cookie_frame = tk.Frame(self.setting_frame, bg='gray')
-        cookie_frame.grid(row=2, column=0, columnspan=2, padx=5, pady=5)
+        cookie_frame.grid(row=3, column=0, columnspan=2, padx=5, pady=5)
 
         tk.Label(cookie_frame, text="NID_AUT:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
         tk.Label(cookie_frame, text="NID_SES:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
@@ -51,15 +57,18 @@ class ChzzkChatGUI:
         self.entry_NID_SES = tk.Entry(cookie_frame, width=30)
         self.entry_NID_SES.grid(row=1, column=1, padx=5, pady=5)
 
-        # "쿠키 초기화" 버튼과 "쿠키 적용" 버튼 프레임
+        # "네이버 쿠키 정보 적용", "네이버 쿠키 정보 초기화"과 "쿠키 입력 지우기" 버튼 프레임
         cookie_setting_frame = tk.Frame(self.setting_frame, bg='gray')
-        cookie_setting_frame.grid(row=3, column=0, columnspan=2, padx=5, pady=5)
+        cookie_setting_frame.grid(row=4, column=0, columnspan=2, padx=5, pady=5)
 
         btn_apply = tk.Button(cookie_setting_frame, text="네이버 쿠키 정보 적용", command=self.save_cookies)
         btn_apply.grid(row=0, column=0, padx=5, pady=5)
 
         btn_reset = tk.Button(cookie_setting_frame, text="네이버 쿠키 정보 초기화", command=self.reset_cookies)
-        btn_reset.grid(row=0, column=1, padx=5, pady=5)
+        btn_reset.grid(row=1, column=0, padx=5, pady=5)
+
+        clear_cookie_box_button = tk.Button(cookie_setting_frame, text="쿠키 입력 지우기", command=self.clear_cookies)
+        clear_cookie_box_button.grid(row=2, column=0, padx=5, pady=5)
 
         # Result Frame
         self.result_frame = tk.Frame(master)
@@ -82,10 +91,15 @@ class ChzzkChatGUI:
         self.cmd_Text.config(xscrollcommand=self.cmd_Scrollbar_x.set)
 
         # 프로그램 최초 실행 시 cmd_Text에 전시되는 코드
-        self.update_result("치지직 채팅 크롤러 사용 방법 안내")
-        self.update_result("1. 네이버에 접속 후 '개발자도구(F12)' -> '애플리케이션' -> 저장용량에서 '쿠키' 확장 -> NID_AUT, NID_SES 값 복붙하기")
+        self.update_result("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ■■■치지직 채팅 크롤러 사용 방법 안내■■■ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+        self.update_result("1. 네이버에 접속 후 '개발자도구(F12)' -> '애플리케이션' -> 저장용량에서 '쿠키' 확장 -> NID_AUT, NID_SES 값 복사")
+        self.update_result("   NID_AUT, NID_SES 값을 붙여넣는 공간에 붙여넣고, '네이버 쿠키 정보 적용' 버튼 클릭")
         self.update_result("2. 원하는 스트리머 ID값을 기입 후 '채팅 불러오기' 버튼을 눌러주세요.")
         self.update_result("3. 종료를 원할 경우 '채팅 불러오기 종료' 버튼을 눌러주세요.")
+        self.update_result("※ 만약 쿠키값을 잘못 입력하였을 경우 '네이버 쿠키 정보 초기화' 버튼, '쿠키 입력 지우기' 버튼 클릭 후 재시도 해주세요!")
+        self.update_result("※ 채팅 불러오기 실행 도중 팝업되는 Python Console은 프로그램이 정상적으로 동작하는 과정이니 절대 종료하지마세요!")
+        self.update_result("※ 채팅을 그만 불러오게 하려면 팝업된 Python Console 종료 대신 '채팅 불러오기 종료' 버튼을 통해 정지해주세요!")
+        self.update_result("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
 
         # default설정
         self.processing = False
@@ -93,14 +107,25 @@ class ChzzkChatGUI:
         self.chat_thread = None
         self.process = None  # 채팅을 실행할 프로세스 객체를 저장하기 위한 변수
 
+    def clear_id(self):
+        # Entry 위젯에 입력된 텍스트를 삭제하는 함수
+        self.edit_box.delete(0, tk.END)
+        self.update_result("System: 스트리머 ID 입력란 초기화 완료")
+
+    def clear_cookies(self):
+        # Entry 쿠키 위젯에 입력된 텍스트를 삭제하는 함수
+        self.entry_NID_AUT.delete(0, tk.END)
+        self.entry_NID_SES.delete(0, tk.END)
+        self.update_result("System: 쿠키 입력란 초기화 완료")
+
     def clear_chat_log(self):
         # chat.log 파일이 존재하면 파일을 열고 내용을 비우는 함수
         try:
             with open("chat.log", "w") as f:
                 f.write("")
-            self.update_result("채팅 로그를 초기화했습니다.")
+            self.update_result("System: 채팅 로그를 초기화했습니다.")
         except Exception as e:
-            self.update_result("채팅 로그 초기화 실패: {}".format(str(e)))
+            self.update_result("System: 채팅 로그 초기화 실패: {}".format(str(e)))
 
     def exit_app(self):
         # tkinter 창 닫는 함수
@@ -119,7 +144,7 @@ class ChzzkChatGUI:
         with open("cookies.json", "w") as f:
             json.dump(cookies, f)
 
-        self.update_result("쿠키가 저장되었습니다.")
+        self.update_result("System: 쿠키가 저장되었습니다.")
 
     def reset_cookies(self):
         # cookies.json을 열어 쿠키 정보를 초기화하고 update_result에 결과를 전달하는 함수
@@ -131,7 +156,7 @@ class ChzzkChatGUI:
         with open("cookies.json", "w", encoding="utf-8") as f:
             json.dump(cookies, f, ensure_ascii=False)
 
-        self.update_result("쿠키 정보를 초기화 했습니다.")
+        self.update_result("System: 쿠키 정보를 초기화 했습니다.")
 
     def run_chzzk_chat(self):
         # 이 함수는 "채팅 불러오기" 버튼을 클릭할 때 실행됩니다. 스트리머 ID를 가져와서 해당 ID를 사용하여 run_command 함수를 새 스레드에서 실행합니다.
@@ -147,7 +172,7 @@ class ChzzkChatGUI:
         if self.process:  # 프로세스가 존재하면 종료
             self.process.terminate()  # 파이썬 콘솔창 프로세스 종료
             self.process = None  # 변수 초기화
-            self.update_result("채팅을 종료했습니다.")
+            self.update_result("System: 채팅을 종료했습니다.")
 
     def run_command(self):
         # 이 함수는 스트리머 ID를 받아와서 subprocess를 이용해 새로운 프로세스를 생성 후 실행합니다.
