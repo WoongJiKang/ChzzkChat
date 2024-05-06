@@ -8,7 +8,7 @@ from websocket import WebSocket
 from cmd_type import CHZZK_CHAT_CMD
 
 
-class ChzzkChat:
+class ChzzkChat:        #생성자 클래스
 
     def __init__(self, streamer, cookies, logger):
 
@@ -25,7 +25,7 @@ class ChzzkChat:
         self.connect()
 
 
-    def connect(self):
+    def connect(self):      #치지직 서버에 연결
 
         self.chatChannelId = api.fetch_chatChannelId(self.streamer)
         self.accessToken, self.extraToken = api.fetch_accessToken(self.chatChannelId, self.cookies)
@@ -109,7 +109,7 @@ class ChzzkChat:
         self.sock.send(json.dumps(dict(send_dict, **default_dict)))
 
 
-    def run(self):
+    def run(self):      #치지직 서버와 통신 후 표시되는 데이터
 
         while True:
 
@@ -177,7 +177,7 @@ class ChzzkChat:
                 pass
             
 
-def get_logger():
+def get_logger():       #채팅 로그를 chat.log 파일에 저장
 
     formatter = logging.Formatter('%(message)s')
 
@@ -194,8 +194,7 @@ def get_logger():
 
     return logger
 
-
-if __name__ == '__main__':
+if __name__ == '__main__':      #스트리머 아이디를 입력받아 채팅 로그 표시
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--streamer_id', type=str, default='9381e7d6816e6d915a44a13c0195b202')
